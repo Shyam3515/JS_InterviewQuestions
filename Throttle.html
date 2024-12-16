@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throttle</title>
+  </head>
+  <body>
+    <input type="text" id="input" />
+    <p id="para"></p>
+
+    <script>
+      let input = document.getElementById("input");
+      let para = document.getElementById("para");
+
+      function throttle(func, delay) {
+        let lastTime = 0;
+        return (...args) => {
+          const now = Date.now();
+          if (now - lastTime >= delay) {
+            lastTime = now;
+            func(...args);
+          }
+        };
+      }
+      // args will contain the event object as it is triggered by the event
+      // Function to update the paragraph text
+      function updateOutput(event) {
+        para.textContent = event.target.value;
+      }
+
+      // Create a throttled version of the updateOutput function
+      const throttledUpdateOutput = throttle(updateOutput, 1000);
+
+      // Use the throttled function in the event listener
+      input.addEventListener("input", throttledUpdateOutput);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce</title>
+  </head>
+  <body>
+    <button id="btn">Click me</button>
+
+    <!-- Script -->
+    <script>
+      const btn = document.getElementById("btn");
+
+      function handler(amt) {
+        console.log(`${amt} is amount...`);
+      }
+
+      function debounce(func, delay) {
+        let timeId;
+        return (...args) => {
+          clearTimeout(timeId);
+          timeId = setTimeout(() => func(...args), delay);
+        };
+      }
+
+      // Create the debounced function once
+      const debouncedHandler = debounce(handler, 500);
+
+      btn.addEventListener("click", () => {
+        debouncedHandler("$100");
+      });
+    </script>
+    <!-- Why Can't We Directly Call debounce(handler, 500)("$100")?
+    => When you write debounce(handler, 500), it creates a new function every time.
+    => To achieve proper debouncing, the function created by debounce needs to be the same instance for all clicks, so it can reuse the timeId and clear any pending timeouts before starting a new one. -->
+  </body>
+</html>
